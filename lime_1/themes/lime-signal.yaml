@@ -20,8 +20,8 @@ palette:
   foreground:
     hex: "#ffffff"
     alpha: 0.0          # invisible top layer (default)
-  warmGlow: "rgba(163, 230, 53, 0.14)"   # lime-tinted vignette
-  noiseOpacity: 0.5
+  warmGlow: "rgba(163, 230, 53, 0.20)"   # lime-tinted vignette (a touch stronger)
+  noiseOpacity: 0.55
 
 typography:
   fontSans: '"Geist", system-ui, -apple-system, "Segoe UI", sans-serif'
@@ -57,39 +57,34 @@ colorOverrides:
   accent: "#a3e635"
   accentForeground: "#0c0e0c"
   ring: "#a3e635"
-  border: "rgba(163, 230, 53, 0.14)"
-  input: "rgba(255, 255, 255, 0.06)"
-  mutedForeground: "#99a399"
+  border: "rgba(163, 230, 53, 0.22)"          # more visible card/section borders
+  input: "rgba(255, 255, 255, 0.07)"
+  mutedForeground: "#b0b8ad"                  # lifted for readability (was too dim)
   success: "#7fdc6a"
   warning: "#e8c34a"
   destructive: "#f0685e"
 
 # Selector-level eye-candy that componentStyles can't express. Theme-scoped,
 # cleaned up automatically on theme switch. (Cap: 32 KiB.)
+# NOTE: the vignette glow + grain are handled by `palette.warmGlow` +
+# `palette.noiseOpacity` above (wired into the dashboard's <Backdrop/>), so
+# customCSS only adds focus rings, a primary-button glow and themed scrollbars —
+# nothing here is gated on a layout variant, so it always renders.
 customCSS: |
-  /* Lime glow on the primary action + focus rings */
-  .hermes-dashboard [data-variant="primary"],
-  button[data-primary] {
-    box-shadow: 0 0 22px -6px rgba(163, 230, 53, 0.55) !important;
-  }
+  /* Brighter focus ring — keyboard nav + focused inputs read clearly */
   :focus-visible {
     outline: none !important;
-    box-shadow: 0 0 0 3px rgba(163, 230, 53, 0.18) !important;
+    box-shadow: 0 0 0 3px rgba(163, 230, 53, 0.22) !important;
   }
-  /* Soft lime vignette breathing — only under the cockpit shell */
-  :root[data-layout-variant="cockpit"] body::after {
-    content: "";
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    background: radial-gradient(120% 90% at 80% -10%, rgba(163, 230, 53, 0.07), transparent 55%);
-    animation: lime-breathe 8s ease-in-out infinite;
-  }
-  @keyframes lime-breathe {
-    0%, 100% { opacity: 0.6; }
-    50%      { opacity: 1; }
+  /* Lime glow on primary actions (best-effort selectors across button variants) */
+  button.bg-primary, [data-variant="primary"], .btn-primary,
+  button[data-primary] {
+    box-shadow: 0 0 22px -6px rgba(163, 230, 53, 0.6) !important;
   }
   /* Themed scrollbars */
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb, #a3e635 22%, #0c0e0c);
+    background: color-mix(in srgb, #a3e635 24%, #0c0e0c);
     border: 3px solid #0c0e0c; border-radius: 999px;
   }
+  ::-webkit-scrollbar-track { background: transparent; }

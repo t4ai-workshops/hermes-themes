@@ -18,8 +18,8 @@ palette:
   foreground:
     hex: "#ffffff"
     alpha: 0.0
-  warmGlow: "rgba(204, 255, 51, 0.16)"
-  noiseOpacity: 0.8
+  warmGlow: "rgba(204, 255, 51, 0.2)"
+  noiseOpacity: 0.85
 
 typography:
   fontSans: '"Geist", system-ui, -apple-system, "Segoe UI", sans-serif'
@@ -53,47 +53,40 @@ colorOverrides:
   accent: "#ccff33"
   accentForeground: "#0a0b07"
   ring: "#ccff33"
-  border: "rgba(204, 255, 51, 0.18)"
-  input: "rgba(204, 255, 51, 0.07)"
-  mutedForeground: "#9ba38a"
+  border: "rgba(204, 255, 51, 0.24)"
+  input: "rgba(204, 255, 51, 0.08)"
+  mutedForeground: "#aab198"
   success: "#9fe24a"
   warning: "#e8d24a"
   destructive: "#ff6a4a"
 
+# Vignette glow + grain come from palette.warmGlow / noiseOpacity (Backdrop).
+# The scanline overlay is top-layer chrome (z-index 100, screen blend) and is
+# NOT gated on a layout variant, so it shows on every page.
 customCSS: |
-  /* Acid glow on primary + focus */
-  .hermes-dashboard [data-variant="primary"],
-  button[data-primary] {
-    box-shadow: 0 0 24px -5px rgba(204, 255, 51, 0.6) !important;
-  }
   :focus-visible {
     outline: none !important;
-    box-shadow: 0 0 0 3px rgba(204, 255, 51, 0.2) !important;
+    box-shadow: 0 0 0 3px rgba(204, 255, 51, 0.22) !important;
   }
-  /* Subtle CRT scanline overlay — cockpit only, sits above content as chrome */
-  :root[data-layout-variant="cockpit"] body::before {
+  /* Acid glow on primary actions */
+  button.bg-primary, [data-variant="primary"], .btn-primary,
+  button[data-primary] {
+    box-shadow: 0 0 24px -5px rgba(204, 255, 51, 0.65) !important;
+  }
+  /* Subtle CRT scanline overlay — retro terminal eye-candy, very low alpha */
+  body::before {
     content: "";
     position: fixed; inset: 0; pointer-events: none; z-index: 100;
     background: repeating-linear-gradient(
       to bottom,
       transparent 0px, transparent 2px,
-      rgba(204, 255, 51, 0.030) 3px, rgba(204, 255, 51, 0.030) 4px
+      rgba(204, 255, 51, 0.028) 3px, rgba(204, 255, 51, 0.028) 4px
     );
     mix-blend-mode: screen;
-  }
-  /* Warm green glow behind the shell */
-  :root[data-layout-variant="cockpit"] body::after {
-    content: "";
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    background: radial-gradient(120% 90% at 80% -10%, rgba(204, 255, 51, 0.08), transparent 54%);
-    animation: acid-breathe 8s ease-in-out infinite;
-  }
-  @keyframes acid-breathe {
-    0%, 100% { opacity: 0.6; }
-    50%      { opacity: 1; }
   }
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-thumb {
     background: color-mix(in srgb, #ccff33 24%, #0a0b07);
     border: 3px solid #0a0b07; border-radius: 999px;
   }
+  ::-webkit-scrollbar-track { background: transparent; }
