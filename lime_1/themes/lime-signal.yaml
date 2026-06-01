@@ -1,0 +1,95 @@
+# ~/.hermes/dashboard-themes/lime-signal.yaml
+# ──────────────────────────────────────────────────────────────
+#  LIME SIGNAL  ·  clean charcoal + lime · the professional pick
+#  Dark neutral canvas, light readable body text, lime drives every
+#  interactive + accent (focus rings, active tabs, data-viz, HUD).
+# ──────────────────────────────────────────────────────────────
+name: lime-signal
+label: Lime Signal
+description: Clean charcoal with lime-green accents — readable, professional, a little glow.
+
+# 3-layer palette. midground is the primary text/chrome colour (kept light
+# for readability); the lime accent is applied via colorOverrides below.
+palette:
+  background:
+    hex: "#0c0e0c"
+    alpha: 1.0
+  midground:
+    hex: "#e9ede7"      # light off-white → body text, foreground chrome
+    alpha: 1.0
+  foreground:
+    hex: "#ffffff"
+    alpha: 0.0          # invisible top layer (default)
+  warmGlow: "rgba(163, 230, 53, 0.14)"   # lime-tinted vignette
+  noiseOpacity: 0.5
+
+typography:
+  fontSans: '"Geist", system-ui, -apple-system, "Segoe UI", sans-serif'
+  fontMono: '"JetBrains Mono", ui-monospace, "SFMono-Regular", monospace'
+  fontDisplay: '"Geist", system-ui, sans-serif'
+  fontUrl: "https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+  baseSize: "16px"        # bigger than the 15px default — the main readability fix
+  lineHeight: "1.55"
+  letterSpacing: "-0.005em"
+
+layout:
+  radius: "0.6rem"
+  density: comfortable
+
+layoutVariant: cockpit     # left telemetry rail — filled by the hermes-cockpit plugin
+
+# Chrome overrides — applied to every shared shell component, no selectors needed.
+componentStyles:
+  card:
+    background: "linear-gradient(180deg, rgba(22, 26, 21, 0.92), rgba(12, 14, 12, 0.94))"
+    boxShadow: "inset 0 0 0 1px rgba(163, 230, 53, 0.10), 0 18px 40px -24px rgba(0, 0, 0, 0.9)"
+  header:
+    background: "linear-gradient(180deg, rgba(16, 20, 15, 0.96), rgba(12, 14, 12, 0.92))"
+  sidebar:
+    background: "linear-gradient(180deg, rgba(16, 19, 16, 0.6), rgba(12, 14, 12, 0))"
+  footer:
+    background: "rgba(16, 19, 16, 0.6)"
+
+# Specific accents the palette derivation won't produce on its own.
+colorOverrides:
+  primary: "#a3e635"
+  primaryForeground: "#0c0e0c"
+  accent: "#a3e635"
+  accentForeground: "#0c0e0c"
+  ring: "#a3e635"
+  border: "rgba(163, 230, 53, 0.14)"
+  input: "rgba(255, 255, 255, 0.06)"
+  mutedForeground: "#99a399"
+  success: "#7fdc6a"
+  warning: "#e8c34a"
+  destructive: "#f0685e"
+
+# Selector-level eye-candy that componentStyles can't express. Theme-scoped,
+# cleaned up automatically on theme switch. (Cap: 32 KiB.)
+customCSS: |
+  /* Lime glow on the primary action + focus rings */
+  .hermes-dashboard [data-variant="primary"],
+  button[data-primary] {
+    box-shadow: 0 0 22px -6px rgba(163, 230, 53, 0.55) !important;
+  }
+  :focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(163, 230, 53, 0.18) !important;
+  }
+  /* Soft lime vignette breathing — only under the cockpit shell */
+  :root[data-layout-variant="cockpit"] body::after {
+    content: "";
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(120% 90% at 80% -10%, rgba(163, 230, 53, 0.07), transparent 55%);
+    animation: lime-breathe 8s ease-in-out infinite;
+  }
+  @keyframes lime-breathe {
+    0%, 100% { opacity: 0.6; }
+    50%      { opacity: 1; }
+  }
+  /* Themed scrollbars */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, #a3e635 22%, #0c0e0c);
+    border: 3px solid #0c0e0c; border-radius: 999px;
+  }

@@ -1,0 +1,15 @@
+{
+  "name": "hermes-cockpit",
+  "label": "Cockpit HUD",
+  "description": "Telemetry sidebar HUD, header crest and footer tagline for the lime cockpit themes. Renders only under layoutVariant: cockpit.",
+  "icon": "Activity",
+  "version": "1.0.0",
+  "tab": {
+    "path": "/hermes-cockpit",
+    "position": "end",
+    "hidden": true
+  },
+  "slots": ["sidebar", "header-left", "footer-right"],
+  "entry": "dist/index.js",
+  "css": "dist/style.css"
+}

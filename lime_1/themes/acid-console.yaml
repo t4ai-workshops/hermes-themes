@@ -1,0 +1,99 @@
+# ~/.hermes/dashboard-themes/acid-console.yaml
+# ──────────────────────────────────────────────────────────────
+#  ACID CONSOLE  ·  warm green-black + punchy acid lime + scanlines
+#  The most "terminal" of the three: warm-tinted near-black, a brighter
+#  acid lime, and a subtle scanline overlay for retro-CRT eye-candy.
+# ──────────────────────────────────────────────────────────────
+name: acid-console
+label: Acid Console
+description: Warm green-black terminal vibe with punchy acid-lime accents and soft scanlines.
+
+palette:
+  background:
+    hex: "#0a0b07"
+    alpha: 1.0
+  midground:
+    hex: "#e9ecdb"      # warm light → body text
+    alpha: 1.0
+  foreground:
+    hex: "#ffffff"
+    alpha: 0.0
+  warmGlow: "rgba(204, 255, 51, 0.16)"
+  noiseOpacity: 0.8
+
+typography:
+  fontSans: '"Geist", system-ui, -apple-system, "Segoe UI", sans-serif'
+  fontMono: '"JetBrains Mono", ui-monospace, "SFMono-Regular", monospace'
+  fontDisplay: '"Geist", system-ui, sans-serif'
+  fontUrl: "https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+  baseSize: "16px"
+  lineHeight: "1.55"
+  letterSpacing: "0"
+
+layout:
+  radius: "0.5rem"
+  density: comfortable
+
+layoutVariant: cockpit
+
+componentStyles:
+  card:
+    background: "linear-gradient(180deg, rgba(20, 22, 14, 0.92), rgba(10, 11, 7, 0.95))"
+    boxShadow: "inset 0 0 0 1px rgba(204, 255, 51, 0.16), 0 18px 40px -24px rgba(0, 0, 0, 0.92)"
+  header:
+    background: "linear-gradient(180deg, rgba(16, 18, 9, 0.96), rgba(10, 11, 7, 0.92))"
+  sidebar:
+    background: "linear-gradient(180deg, rgba(16, 18, 9, 0.6), rgba(10, 11, 7, 0))"
+  footer:
+    background: "rgba(16, 18, 9, 0.6)"
+
+colorOverrides:
+  primary: "#ccff33"
+  primaryForeground: "#0a0b07"
+  accent: "#ccff33"
+  accentForeground: "#0a0b07"
+  ring: "#ccff33"
+  border: "rgba(204, 255, 51, 0.18)"
+  input: "rgba(204, 255, 51, 0.07)"
+  mutedForeground: "#9ba38a"
+  success: "#9fe24a"
+  warning: "#e8d24a"
+  destructive: "#ff6a4a"
+
+customCSS: |
+  /* Acid glow on primary + focus */
+  .hermes-dashboard [data-variant="primary"],
+  button[data-primary] {
+    box-shadow: 0 0 24px -5px rgba(204, 255, 51, 0.6) !important;
+  }
+  :focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(204, 255, 51, 0.2) !important;
+  }
+  /* Subtle CRT scanline overlay — cockpit only, sits above content as chrome */
+  :root[data-layout-variant="cockpit"] body::before {
+    content: "";
+    position: fixed; inset: 0; pointer-events: none; z-index: 100;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px, transparent 2px,
+      rgba(204, 255, 51, 0.030) 3px, rgba(204, 255, 51, 0.030) 4px
+    );
+    mix-blend-mode: screen;
+  }
+  /* Warm green glow behind the shell */
+  :root[data-layout-variant="cockpit"] body::after {
+    content: "";
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(120% 90% at 80% -10%, rgba(204, 255, 51, 0.08), transparent 54%);
+    animation: acid-breathe 8s ease-in-out infinite;
+  }
+  @keyframes acid-breathe {
+    0%, 100% { opacity: 0.6; }
+    50%      { opacity: 1; }
+  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, #ccff33 24%, #0a0b07);
+    border: 3px solid #0a0b07; border-radius: 999px;
+  }
